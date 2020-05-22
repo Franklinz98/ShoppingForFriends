@@ -3,6 +3,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 
 class MainContainer extends StatefulWidget {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   _MainContainerState createState() => _MainContainerState();
 }
@@ -25,7 +26,7 @@ class _MainContainerState extends State<MainContainer> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.tuna,
+        key: widget._scaffoldKey,
         floatingActionButton: _fab,
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar: BottomAppBar(
