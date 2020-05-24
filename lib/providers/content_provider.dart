@@ -26,6 +26,16 @@ class ContentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addUnit(int index) {
+    _myList[index].addUnit();
+    notifyListeners();
+  }
+
+  void removeUnit(int index) {
+    _myList[index].removeUnit();
+    notifyListeners();
+  }
+
   void addFriendList(String uid) {
     _friendsList.add(uid);
     notifyListeners();

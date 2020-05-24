@@ -49,19 +49,13 @@ class _DraftListState extends State<DraftList> {
                   product: product,
                   formatter: widget.copFormatter,
                   onDismissed: (direction) {
-                    setState(() {
-                      widget.contentNotifier.removeProduct(index);
-                    });
+                    widget.contentNotifier.removeProduct(index);
                   },
                   onMinusPressed: () {
-                    setState(() {
-                      product.removeUnit();
-                    });
+                    widget.contentNotifier.removeUnit(index);
                   },
                   onPlusPressed: () {
-                    setState(() {
-                      product.addUnit();
-                    });
+                    widget.contentNotifier.addUnit(index);
                   },
                 );
               } else {
@@ -94,9 +88,7 @@ class _DraftListState extends State<DraftList> {
       MaterialPageRoute(builder: (context) => SearchScreen()),
     );
     if (result != null) {
-      setState(() {
-        widget.contentNotifier.addProduct(result);
-      });
+      widget.contentNotifier.addProduct(result);
     }
   }
 }
