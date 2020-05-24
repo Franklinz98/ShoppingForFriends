@@ -4,6 +4,7 @@ class Product {
   String name;
   int price;
   int quantity;
+  bool purchased = false;
 
   Product({@required this.name, @required this.price, @required this.quantity});
 
@@ -15,5 +16,9 @@ class Product {
     if (quantity != 0) {
       quantity = quantity - 1;
     }
+  }
+
+  void changePurchasedState() {
+    purchased = !purchased;
   }
 }

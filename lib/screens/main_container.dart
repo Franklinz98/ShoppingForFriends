@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/widgets/draft/draft.dart';
 
 class MainContainer extends StatefulWidget {
@@ -17,6 +19,7 @@ class _MainContainerState extends State<MainContainer> {
   void initState() {
     super.initState();
     _fab = FloatingActionButton(
+      heroTag: 'Show Friends',
       onPressed: () {},
       child: Icon(Icons.group),
     );
@@ -28,7 +31,13 @@ class _MainContainerState extends State<MainContainer> {
     return SafeArea(
       child: Scaffold(
         key: widget._scaffoldKey,
-        body: DraftList(),
+        body: Consumer<ContentProvider>(
+          builder: (context, contentNotifier, child) {
+            return DraftList(
+              contentNotifier: contentNotifier,
+            );
+          },
+        ),
         floatingActionButton: _fab,
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar: BottomAppBar(

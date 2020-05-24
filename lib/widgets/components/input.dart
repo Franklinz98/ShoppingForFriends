@@ -3,8 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 
 class Input extends StatefulWidget {
+  final String hintText;
   final Function validator;
   final TextInputType inputType;
+  final Icon icon;
   final bool obscureText;
   final TextEditingController controller;
   final Color backgoundColor;
@@ -13,6 +15,8 @@ class Input extends StatefulWidget {
       {Key key,
       @required this.validator,
       @required this.controller,
+      this.icon,
+      this.hintText,
       this.inputType,
       this.backgoundColor = AppColors.gun_powder,
       this.obscureText = false})
@@ -36,6 +40,11 @@ class _InputState extends State<Input> {
       child: TextFormField(
         decoration: InputDecoration(
           border: InputBorder.none,
+          hintText: widget.hintText,
+          icon: widget.icon,
+          hintStyle: GoogleFonts.roboto(
+            color: AppColors.spun_pearl,
+          ),
         ),
         style: GoogleFonts.roboto(
           fontSize: 16,
