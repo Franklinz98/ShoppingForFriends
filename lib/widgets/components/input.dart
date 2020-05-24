@@ -7,12 +7,14 @@ class Input extends StatefulWidget {
   final TextInputType inputType;
   final bool obscureText;
   final TextEditingController controller;
+  final Color backgoundColor;
 
   const Input(
       {Key key,
       @required this.validator,
       @required this.controller,
       this.inputType,
+      this.backgoundColor = AppColors.gun_powder,
       this.obscureText = false})
       : super(key: key);
 
@@ -28,7 +30,7 @@ class _InputState extends State<Input> {
         horizontal: 16.0,
       ),
       decoration: BoxDecoration(
-        color: AppColors.gun_powder,
+        color: widget.backgoundColor,
         borderRadius: BorderRadius.circular(4.00),
       ),
       child: TextFormField(

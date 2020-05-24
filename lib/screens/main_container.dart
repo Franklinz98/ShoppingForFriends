@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/widgets/draft/draft.dart';
 
 class MainContainer extends StatefulWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -27,6 +28,7 @@ class _MainContainerState extends State<MainContainer> {
     return SafeArea(
       child: Scaffold(
         key: widget._scaffoldKey,
+        body: DraftList(),
         floatingActionButton: _fab,
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         bottomNavigationBar: BottomAppBar(
@@ -44,7 +46,11 @@ class _MainContainerState extends State<MainContainer> {
                         ? AppColors.cornflower_blue
                         : Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _selectedScreen = SelectedScreen.edit;
+                    });
+                  },
                 ),
                 IconButton(
                   icon: Icon(
@@ -53,7 +59,11 @@ class _MainContainerState extends State<MainContainer> {
                         ? AppColors.cornflower_blue
                         : Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _selectedScreen = SelectedScreen.preview;
+                    });
+                  },
                 ),
               ],
             ),

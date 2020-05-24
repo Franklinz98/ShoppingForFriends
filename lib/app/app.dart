@@ -19,7 +19,7 @@ class ShoppingForFriendsApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: AppColors.tuna
       ),
-      home: AuthContainer(),
+      home: MainContainer(),
     );
   }
 }
