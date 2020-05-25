@@ -62,10 +62,10 @@ class _AuthContainerState extends State<AuthContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        key: widget._scaffoldKey,
-        body: Padding(
+    return Scaffold(
+      key: widget._scaffoldKey,
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 500), child: content),

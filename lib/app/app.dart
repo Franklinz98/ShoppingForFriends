@@ -13,6 +13,7 @@ class ShoppingForFriendsApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    final ContentProvider contentProvider = ContentProvider();
     return MaterialApp(
       title: 'Shopping For Friends',
       theme: ThemeData(
@@ -22,8 +23,10 @@ class ShoppingForFriendsApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: AppColors.tuna),
       home: ChangeNotifierProvider(
-        create: (context) => ContentProvider(),
-        child: MainContainer(),
+        create: (context) => contentProvider,
+        child: MainContainer(
+          contentProvider: contentProvider,
+        ),
       ),
     );
   }

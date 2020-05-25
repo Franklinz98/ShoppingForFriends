@@ -1,20 +1,20 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
+import 'package:shopping_for_friends/models/friend_list.dart';
 import 'package:shopping_for_friends/models/product.dart';
 
 class ContentProvider extends ChangeNotifier {
   List<Product> _myList = [];
-  List<UnmodifiableListView> _friendsLists = [];
-  List<String> _friendsList = [];
+  List<FriendList> _friendsLists = [];
+  List<String> _selectedFriends = [];
 
   UnmodifiableListView<Product> get myList => UnmodifiableListView(_myList);
-  UnmodifiableListView<UnmodifiableListView> get friendsLists =>
-      UnmodifiableListView<UnmodifiableListView>(_friendsLists);
-  UnmodifiableListView<String> get friendList =>
-      UnmodifiableListView(_friendsList);
+  UnmodifiableListView<FriendList> get friendsLists =>
+      UnmodifiableListView(_friendsLists);
 
   int get length => _myList.length;
+  int get friendsLength => _friendsLists.length;
 
   void addProduct(Product product) {
     _myList.add(product);
@@ -36,13 +36,27 @@ class ContentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addFriendList(String uid) {
-    _friendsList.add(uid);
+  bool isSelected(String uid) {
+    return _selectedFriends.contains(uid);
+  }
+
+  void switchFriendListState(FriendList friendList) {
+    if (_selectedFriends.contains(friendList.uid)) {
+      _selectedFriends.remove(friendList.uid);
+      friendList.checked = false;
+    } else {
+      _selectedFriends.add(friendList.uid);
+      friendList.checked = true;
+    }
     notifyListeners();
   }
 
-  void addFriendLists(List list) {
-    _friendsLists.add(UnmodifiableListView(list));
+  void resetFriendLists() {
+    _friendsLists.clear();
+  }
+
+  void addFriendLists(List<FriendList> list) {
+    _friendsLists.addAll(list);
     notifyListeners();
   }
 }
