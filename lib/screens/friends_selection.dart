@@ -2,9 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/models/friend_list.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';

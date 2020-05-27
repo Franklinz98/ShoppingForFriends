@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>952811754260-n0qq3lp73mp64kf924168sc7b26cblv1.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.952811754260-n0qq3lp73mp64kf924168sc7b26cblv1</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>952811754260-g7lo4ssnmp37s4du3g2f62j3rcnnfc28.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBfw8jRLkFTh2tYM4AiqNEQPXWIH5LmkrQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>952811754260</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.shoppingForFriends</string>
+	<key>PROJECT_ID</key>
+	<string>shoppingforfriends-43666</string>
+	<key>STORAGE_BUCKET</key>
+	<string>shoppingforfriends-43666.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:952811754260:ios:239199be00ecb367efe801</string>
+	<key>DATABASE_URL</key>
+	<string>https://shoppingforfriends-43666.firebaseio.com</string>
+</dict>
+</plist>
