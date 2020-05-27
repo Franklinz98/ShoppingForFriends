@@ -9,7 +9,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 final db = Firestore.instance;
 User currentSignedInUser = User();
 
-Future<String> signInWithGoogle() async {
+Future<User> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   print('DC:signInWithGoogle');
   print(googleSignInAccount);
@@ -55,7 +55,7 @@ Future<String> signInWithGoogle() async {
   }
   print('DC: GOLAZOPAPA');
 
-  return 'signInWithGoogle succeeded: $user';
+  return currentSignedInUser;
 }
 
 void signOutGoogle() async {
