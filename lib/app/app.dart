@@ -22,12 +22,13 @@ class ShoppingForFriendsApp extends StatelessWidget {
             backgroundColor: AppColors.cornflower_blue,
           ),
           scaffoldBackgroundColor: AppColors.tuna),
-      home: ChangeNotifierProvider(
+      /* home: ChangeNotifierProvider(
         create: (context) => contentProvider,
         child: MainContainer(
           contentProvider: contentProvider,
         ),
-      ),
+      ), */
+      home: AuthContainer(),
     );
   }
 }
