@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/widgets/auth/change_password.dart';
 import 'package:shopping_for_friends/widgets/auth/login.dart';
 import 'package:shopping_for_friends/widgets/auth/signup.dart';
@@ -10,6 +11,10 @@ import 'package:shopping_for_friends/widgets/components/linked_text.dart';
 
 class AuthContainer extends StatefulWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ContentProvider contentProvider;
+
+  AuthContainer({Key key, @required this.contentProvider}) : super(key: key);
+
   @override
   _AuthContainerState createState() => _AuthContainerState();
 }
@@ -42,6 +47,7 @@ class _AuthContainerState extends State<AuthContainer> {
           break;
         default:
           content = Login(
+            contentProvider: widget.contentProvider,
             onSignUpShow: () {
               _updateView(1);
             },

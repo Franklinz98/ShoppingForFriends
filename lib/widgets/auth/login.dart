@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/google/google_controller.dart';
+import 'package:shopping_for_friends/providers/content_provider.dart';
+import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
 import 'package:shopping_for_friends/widgets/components/linked_text.dart';
@@ -10,24 +13,32 @@ class Login extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final VoidCallback onSignUpShow;
   final VoidCallback onForgottenShow;
+  final ContentProvider contentProvider;
 
   Login({
     Key key,
+    @required this.contentProvider,
     @required this.onSignUpShow,
     @required this.onForgottenShow,
   }) : super(key: key);
-  
-  void _doLogin() async {
 
+  void _googleLogin(BuildContext context) async {
     var result = await signInWithGoogle();
     print('DC - END GOOGLE LOGIN');
     if (result != null) {
-      print('GOOGLE LOGIN');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider<ContentProvider>(
+            create: (context) => contentProvider,
+            child: MainContainer(
+              contentProvider: contentProvider,
+            ),
+          ),
+        ),
+      );
     }
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +152,7 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 56.0,
                   ),
-                  _googleButton(
-                    () {},
-                  ),
+                  _googleButton(context),
                 ],
               ),
             ),
@@ -180,7 +189,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget _googleButton(onTap) {
+  Widget _googleButton(BuildContext context) {
     return Row(
       children: <Widget>[
         Spacer(),
@@ -220,7 +229,7 @@ class Login extends StatelessWidget {
                   )
                 ],
               ),
-              onPressed: () => _doLogin(),
+              onPressed: () => _googleLogin(context),
             ),
           ],
         ),

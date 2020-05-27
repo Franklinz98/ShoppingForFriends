@@ -28,7 +28,9 @@ class ShoppingForFriendsApp extends StatelessWidget {
           contentProvider: contentProvider,
         ),
       ), */
-      home: AuthContainer(),
+      home: AuthContainer(
+        contentProvider: contentProvider,
+      ),
     );
   }
 }
