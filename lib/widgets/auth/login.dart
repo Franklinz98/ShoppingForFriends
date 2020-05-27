@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/google/google_controller.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
 import 'package:shopping_for_friends/widgets/components/linked_text.dart';
@@ -15,6 +16,18 @@ class Login extends StatelessWidget {
     @required this.onSignUpShow,
     @required this.onForgottenShow,
   }) : super(key: key);
+  
+  void _doLogin() async {
+
+    var result = await signInWithGoogle();
+    print('DC - END GOOGLE LOGIN');
+    if (result != null) {
+      print('GOOGLE LOGIN');
+    }
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +220,7 @@ class Login extends StatelessWidget {
                   )
                 ],
               ),
-              onPressed: onTap,
+              onPressed: () => _doLogin(),
             ),
           ],
         ),

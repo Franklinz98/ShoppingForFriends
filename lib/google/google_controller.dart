@@ -11,33 +11,41 @@ User currentSignedInUser = User();
 
 Future<String> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-
+  print('DC:signInWithGoogle');
+  print(googleSignInAccount);
   if (googleSignInAccount == null) {
     return null;
   }
 
   final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-
+  print('DC:googleSignInAuthentication');
+  print(googleSignInAuthentication);
   final AuthCredential credential = GoogleAuthProvider.getCredential(
     accessToken: googleSignInAuthentication.accessToken,
     idToken: googleSignInAuthentication.idToken,
   );
-
+  print('DC:credential');
+  print(credential);
   final FirebaseUser user = await _auth.signInWithCredential(credential);
-
+  print('DC:user');
+  print(user);
   assert(!user.isAnonymous);
   assert(await user.getIdToken() != null);
 
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(user.uid == currentUser.uid);
 
+  print('DC:currentUser');
+  print(currentUser);
   // check if user already exists
   final DocumentSnapshot userSnapshot = await db
       .collection('users')
       .document(user.email)
       .get();
-
+  print('DC:userSnapshot');
+  print(userSnapshot);
+  print(userSnapshot.exists);
   if (userSnapshot.exists) {
     // user exists, retrieve user data from firestore
     updateCurrentSignedInUser(userSnapshot);
@@ -45,6 +53,7 @@ Future<String> signInWithGoogle() async {
     // user not exists, create a new user
     await addUserToFirestore(user: user);
   }
+  print('DC: GOLAZOPAPA');
 
   return 'signInWithGoogle succeeded: $user';
 }
