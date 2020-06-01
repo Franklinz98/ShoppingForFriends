@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/screens/friends_selection.dart';
 import 'package:shopping_for_friends/widgets/draft/draft.dart';
+import 'package:shopping_for_friends/widgets/review/checkout.dart';
 
 class MainContainer extends StatefulWidget {
   final ContentProvider contentProvider;
@@ -19,47 +20,22 @@ class MainContainer extends StatefulWidget {
 class _MainContainerState extends State<MainContainer> {
   Widget _fab;
   SelectedScreen _selectedScreen;
+  Widget _content;
+  Widget _draft;
+  Widget _checkout;
 
   @override
   void initState() {
     super.initState();
-    _fab = FloatingActionButton(
-      heroTag: 'Show Friends',
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider<ContentProvider>.value(
-              value: widget.contentProvider,
-              child: Consumer<ContentProvider>(
-                builder: (context, contentNotifier, child) {
-                  return FriendSelection(
-                    contentNotifier: contentNotifier,
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-      child: Icon(Icons.group),
-    );
-    _selectedScreen = SelectedScreen.edit;
+    _initWidgets();
+    _switchContent();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: widget._scaffoldKey,
-      body: SafeArea(
-        child: Consumer<ContentProvider>(
-          builder: (context, contentNotifier, child) {
-            return DraftList(
-              contentNotifier: contentNotifier,
-            );
-          },
-        ),
-      ),
+      body: SafeArea(child: _content),
       floatingActionButton: _fab,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
@@ -72,27 +48,29 @@ class _MainContainerState extends State<MainContainer> {
             children: <Widget>[
               IconButton(
                 icon: Icon(
-                  LineIcons.plus_circle,
-                  color: _selectedScreen == SelectedScreen.edit
+                  SFFLineAwesome.plus_circle_solid,
+                  color: _selectedScreen == SelectedScreen.draft
                       ? AppColors.cornflower_blue
                       : Colors.white,
                 ),
                 onPressed: () {
                   setState(() {
-                    _selectedScreen = SelectedScreen.edit;
+                    _selectedScreen = SelectedScreen.draft;
+                    _switchContent();
                   });
                 },
               ),
               IconButton(
                 icon: Icon(
-                  LineIcons.list_alt,
-                  color: _selectedScreen == SelectedScreen.preview
+                  SFFLineAwesome.list_alt_solid,
+                  color: _selectedScreen == SelectedScreen.checkout
                       ? AppColors.cornflower_blue
                       : Colors.white,
                 ),
                 onPressed: () {
                   setState(() {
-                    _selectedScreen = SelectedScreen.preview;
+                    _selectedScreen = SelectedScreen.checkout;
+                    _switchContent();
                   });
                 },
               ),
@@ -102,6 +80,75 @@ class _MainContainerState extends State<MainContainer> {
       ),
     );
   }
+
+  _initWidgets() {
+    _draft = Consumer<ContentProvider>(
+      builder: (context, contentNotifier, child) {
+        return DraftList(
+          contentNotifier: contentNotifier,
+        );
+      },
+    );
+    _checkout = Consumer<ContentProvider>(
+      builder: (context, contentNotifier, child) {
+        return Checkout(
+          contentNotifier: contentNotifier,
+        );
+      },
+    );
+    print("main: ${widget.contentProvider.hashCode}");
+    _selectedScreen = SelectedScreen.draft;
+  }
+
+  _switchContent() {
+    if (_selectedScreen == SelectedScreen.draft) {
+      _content = _draft;
+      _fab = FloatingActionButton(
+        heroTag: 'Show Friends',
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  ChangeNotifierProvider<ContentProvider>.value(
+                value: widget.contentProvider,
+                child: Consumer<ContentProvider>(
+                  key: UniqueKey(),
+                  builder: (context, contentNotifier, child) {
+                    return FriendSelection(
+                      contentNotifier: contentNotifier,
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.group),
+      );
+    } else {
+      if (widget.contentProvider.isFinished) {
+        _content = _checkout;
+        _fab = FloatingActionButton(
+          heroTag: 'Done',
+          onPressed: () {},
+          child: Icon(Icons.done_all),
+        );
+      } else {
+        _content = _checkout;
+        _fab = FloatingActionButton(
+          heroTag: 'Finish List',
+          onPressed: () {
+            setState(() {
+              widget.contentProvider.finishList();
+              _switchContent();
+            });
+          },
+          child: Icon(Icons.done),
+        );
+      }
+    }
+  }
 }
 
-enum SelectedScreen { edit, preview }
+enum SelectedScreen { draft, checkout }

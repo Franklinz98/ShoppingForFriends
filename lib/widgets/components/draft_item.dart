@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/models/product.dart';
+import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 
 import 'dismissible_background.dart';
 
@@ -90,7 +90,7 @@ class DraftTile extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(
-                      LineIcons.minus_circle,
+                      SFFLineAwesome.minus_circle_solid,
                       color: AppColors.cornflower_blue,
                     ),
                     onPressed: this.onMinusPressed,
@@ -115,7 +115,7 @@ class DraftTile extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(
-                      LineIcons.plus_circle,
+                      SFFLineAwesome.plus_circle_solid,
                       color: AppColors.cornflower_blue,
                     ),
                     onPressed: this.onPlusPressed,

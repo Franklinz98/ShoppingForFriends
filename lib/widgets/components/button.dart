@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_for_friends/constants/colors.dart';
 
 class Button extends StatelessWidget {
   final double height;

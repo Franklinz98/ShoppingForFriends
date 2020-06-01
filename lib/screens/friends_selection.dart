@@ -1,16 +1,13 @@
 import 'dart:collection';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/constants/formatter.dart';
 import 'package:shopping_for_friends/models/friend_list.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/widgets/components/friend_selection_item.dart';
 
 class FriendSelection extends StatefulWidget {
-  final copFormatter =
-      NumberFormat.currency(name: "COP", symbol: "\$", decimalDigits: 0);
   final ContentProvider contentNotifier;
 
   FriendSelection({Key key, @required this.contentNotifier}) : super(key: key);
@@ -41,6 +38,7 @@ class _FriendSelectionState extends State<FriendSelection> {
 
   @override
   Widget build(BuildContext context) {
+    print("selection: ${widget.contentNotifier.hashCode}");
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -81,7 +79,7 @@ class _FriendSelectionState extends State<FriendSelection> {
                       widget.contentNotifier.friendsLists[index];
                   return FriendSelectionTile(
                     friendList: friendList,
-                    formatter: widget.copFormatter,
+                    formatter: Formatter.currency,
                     onTap: () {
                       widget.contentNotifier.switchFriendListState(friendList);
                     },

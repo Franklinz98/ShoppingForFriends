@@ -1,17 +1,14 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/constants/formatter.dart';
 import 'package:shopping_for_friends/models/product.dart';
+import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
 import 'package:shopping_for_friends/widgets/components/search_item.dart';
 
 class SearchScreen extends StatefulWidget {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final copFormatter =
-      NumberFormat.currency(name: "COP", symbol: "\$", decimalDigits: 0);
   final List<Product> items = List<Product>.generate(
     12,
     (i) => Product(
@@ -62,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 controller: null,
                 hintText: "Nombre del producto",
                 icon: Icon(
-                  LineIcons.search,
+                  SFFLineAwesome.search_solid,
                   color: AppColors.cornflower_blue,
                 ),
               ),
@@ -74,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   Product product = widget.items[index];
                   return SearchTile(
                     product: product,
-                    formatter: widget.copFormatter,
+                    formatter: Formatter.currency,
                     onTap: () {
                       Navigator.pop(context, product);
                     },
