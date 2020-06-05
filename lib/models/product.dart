@@ -21,4 +21,9 @@ class Product {
   void changePurchasedState() {
     purchased = !purchased;
   }
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+        name: json['name'], quantity: 1, price: json['price'].round());
+  }
 }

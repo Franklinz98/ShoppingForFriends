@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/backend/frutiland_api.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
@@ -29,6 +30,19 @@ class _MainContainerState extends State<MainContainer> {
     super.initState();
     _initWidgets();
     _switchContent();
+    pingService().then((value) {
+      widget._scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Service Online'),
+        ),
+      );
+    }).catchError((error) {
+      widget._scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Service Offline'),
+        ),
+      );
+    });
   }
 
   @override
