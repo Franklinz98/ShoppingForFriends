@@ -21,7 +21,6 @@ Future<User> signInWithFirebase(email, password) async {
   final DocumentSnapshot userSnapshot =
       await db.collection('users').document(fbuser.email).get();
   updateCurrentSignedInUser(userSnapshot);
-  print("EL user es " + currentSignedInUser.toString());
   return currentSignedInUser;
 }
 
@@ -52,6 +51,7 @@ Future<User> signUpWithFirebase(email, password, name) async {
   currentSignedInUser = User(
     email: email,
     name: name,
+    uid:fbUser.uid
   );
   print('currentSignedInUser' + currentSignedInUser.toString());
   await db
