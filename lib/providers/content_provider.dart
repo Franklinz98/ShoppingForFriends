@@ -3,8 +3,10 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:shopping_for_friends/models/friend_list.dart';
 import 'package:shopping_for_friends/models/product.dart';
+import 'package:shopping_for_friends/models/user_model.dart';
 
 class ContentProvider extends ChangeNotifier {
+  User user = null;
   List<Product> _myList = [];
   List<FriendList> _friendsLists = [];
   List<String> _selectedFriends = [];

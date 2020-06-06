@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/providers/content_provider.dart';
+import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
 import 'package:shopping_for_friends/widgets/components/linked_text.dart';
@@ -9,9 +13,14 @@ class SignUp extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final VoidCallback onLoginShow;
   final VoidCallback onBackPressed;
+  final ContentProvider contentProvider;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   SignUp({
     Key key,
+    @required this.contentProvider,
     @required this.onLoginShow,
     @required this.onBackPressed,
   }) : super(key: key);
@@ -60,7 +69,7 @@ class SignUp extends StatelessWidget {
                               }
                               return null;
                             },
-                            controller: null,
+                            controller: nameController,
                           ),
                           SizedBox(
                             height: 8.0,
@@ -85,7 +94,7 @@ class SignUp extends StatelessWidget {
                               }
                               return null;
                             },
-                            controller: null,
+                            controller: emailController,
                             inputType: TextInputType.emailAddress,
                           ),
                           SizedBox(
@@ -111,7 +120,7 @@ class SignUp extends StatelessWidget {
                               }
                               return null;
                             },
-                            controller: null,
+                            controller: passwordController,
                             obscureText: true,
                           ),
                           SizedBox(
@@ -132,7 +141,12 @@ class SignUp extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
-                                // TODO login stuff
+                                _signUp(
+                                  context,
+                                  nameController.text,
+                                  emailController.text,
+                                  passwordController.text,
+                                );
                               }
                             },
                           ),
@@ -174,5 +188,22 @@ class SignUp extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _signUp(BuildContext context, String name, String email, String password) {
+    signUpWithFirebase(email, password, name).then((user) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider<ContentProvider>(
+            create: (context) => contentProvider,
+            child: MainContainer(
+              contentProvider: contentProvider,
+              user: user,
+            ),
+          ),
+        ),
+      );
+    }).catchError((error) {});
   }
 }

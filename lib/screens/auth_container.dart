@@ -22,6 +22,7 @@ class _AuthContainerState extends State<AuthContainer> {
       switch (k) {
         case 1:
           content = SignUp(
+            contentProvider: widget.contentProvider,
             onLoginShow: () {
               _updateView(0);
             },

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopping_for_friends/models/user_model.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -75,8 +74,8 @@ void updateCurrentSignedInUser(DocumentSnapshot userSnapshot) {
   currentSignedInUser = User.fromSnapshot(userSnapshot);
 }
 
-void signOutFirebase() async {
+Future<bool> signOutFirebase() async {
   currentSignedInUser = User();
   await _auth.signOut();
-  print('user signed out');
+  return true;
 }

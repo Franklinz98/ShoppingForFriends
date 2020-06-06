@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
@@ -9,6 +10,7 @@ class ForgottenPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final VoidCallback onLoginShow;
   final VoidCallback onBackPressed;
+  final TextEditingController emailController = TextEditingController();
 
   ForgottenPassword({
     Key key,
@@ -62,7 +64,7 @@ class ForgottenPassword extends StatelessWidget {
                               }
                               return null;
                             },
-                            controller: null,
+                            controller: emailController,
                             inputType: TextInputType.emailAddress,
                           ),
                           SizedBox(
@@ -83,7 +85,7 @@ class ForgottenPassword extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
-                                // TODO login stuff
+                                _recoverPassword(emailController.text);
                               }
                             },
                           ),
@@ -109,5 +111,11 @@ class ForgottenPassword extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _recoverPassword(String email) {
+    recoverWithFirebase(email).then((value) {
+      this.onBackPressed.call();
+    }).catchError((error) {});
   }
 }

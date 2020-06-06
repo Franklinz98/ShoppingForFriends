@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/backend/frutiland_api.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/constants/provider.dart';
+import 'package:shopping_for_friends/models/user_model.dart';
 import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
+import 'package:shopping_for_friends/screens/auth_container.dart';
 import 'package:shopping_for_friends/screens/friends_selection.dart';
 import 'package:shopping_for_friends/widgets/draft/draft.dart';
 import 'package:shopping_for_friends/widgets/review/checkout.dart';
 
 class MainContainer extends StatefulWidget {
   final ContentProvider contentProvider;
+  final User user;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  MainContainer({Key key, @required this.contentProvider}) : super(key: key);
+  MainContainer({
+    Key key,
+    @required this.contentProvider,
+    @required this.user,
+  }) : super(key: key);
 
   @override
   _MainContainerState createState() => _MainContainerState();
@@ -49,7 +58,39 @@ class _MainContainerState extends State<MainContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: widget._scaffoldKey,
-      body: SafeArea(child: _content),
+      body: SafeArea(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    _selectedScreen == SelectedScreen.draft
+                        ? "Lista"
+                        : "Revisión",
+                    style: TextStyle(
+                      fontFamily: "Roboto",
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.power_settings_new,
+                      color: AppColors.cornflower_blue,
+                    ),
+                    onPressed: _signOut),
+              ],
+            ),
+          ),
+          Expanded(child: _content),
+        ],
+      )),
       floatingActionButton: _fab,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
@@ -162,6 +203,20 @@ class _MainContainerState extends State<MainContainer> {
         );
       }
     }
+  }
+
+  _signOut() {
+    signOutFirebase().then((value) {
+      ProviderConstant.newContentProvider();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AuthContainer(
+            contentProvider: ProviderConstant.contentProvider,
+          ),
+        ),
+      );
+    });
   }
 }
 

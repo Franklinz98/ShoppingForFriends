@@ -31,30 +31,12 @@ class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
     print("checkout: ${widget.contentNotifier.hashCode}");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: Text(
-            "Revisión",
-            style: TextStyle(
-              fontFamily: "Roboto",
-              fontSize: 20,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
-            itemBuilder: (_, index) {
-              return _items[index];
-            },
-            itemCount: _items.length,
-          ),
-        ),
-      ],
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 24.0),
+      itemBuilder: (_, index) {
+        return _items[index];
+      },
+      itemCount: _items.length,
     );
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/backend/firebase_auth.dart';
+import 'package:shopping_for_friends/backend/google_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
-import 'package:shopping_for_friends/google/google_controller.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
@@ -14,6 +15,8 @@ class Login extends StatelessWidget {
   final VoidCallback onSignUpShow;
   final VoidCallback onForgottenShow;
   final ContentProvider contentProvider;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   Login({
     Key key,
@@ -23,9 +26,7 @@ class Login extends StatelessWidget {
   }) : super(key: key);
 
   void _googleLogin(BuildContext context) async {
-    var result = await signInWithGoogle();
-    print('DC - END GOOGLE LOGIN');
-    if (result != null) {
+    signInWithGoogle().then((user) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -33,11 +34,12 @@ class Login extends StatelessWidget {
             create: (context) => contentProvider,
             child: MainContainer(
               contentProvider: contentProvider,
+              user: user,
             ),
           ),
         ),
       );
-    }
+    }).catchError((error) {});
   }
 
   @override
@@ -84,7 +86,7 @@ class Login extends StatelessWidget {
                             }
                             return null;
                           },
-                          controller: null,
+                          controller: emailController,
                           inputType: TextInputType.emailAddress,
                         ),
                         SizedBox(
@@ -110,7 +112,7 @@ class Login extends StatelessWidget {
                             }
                             return null;
                           },
-                          controller: null,
+                          controller: passwordController,
                           obscureText: true,
                         ),
                         SizedBox(
@@ -131,7 +133,11 @@ class Login extends StatelessWidget {
                           ),
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
-                              // TODO login stuff
+                              _login(
+                                context,
+                                emailController.text,
+                                passwordController.text,
+                              );
                             }
                           },
                         ),
@@ -236,5 +242,22 @@ class Login extends StatelessWidget {
         Spacer(),
       ],
     );
+  }
+
+  _login(BuildContext context, String email, String password) {
+    signInWithFirebase(email, password).then((user) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider<ContentProvider>(
+            create: (context) => contentProvider,
+            child: MainContainer(
+              contentProvider: contentProvider,
+              user: user,
+            ),
+          ),
+        ),
+      );
+    }).catchError((error) {});
   }
 }
