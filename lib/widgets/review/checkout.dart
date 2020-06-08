@@ -6,6 +6,7 @@ import 'package:shopping_for_friends/models/friend_list.dart';
 import 'package:shopping_for_friends/models/product.dart';
 import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
+import 'package:shopping_for_friends/screens/chat.dart';
 import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/preview_header.dart';
 import 'package:shopping_for_friends/widgets/components/preview_item.dart';
@@ -59,7 +60,14 @@ class _CheckoutState extends State<Checkout> {
             icon: SFFLineAwesome.user_friends_solid,
             text: friendList.name,
             total: friendList.total,
-            onChatTap: () {},
+            onChatTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Chat(user: null),
+                ),
+              );
+            },
           ));
           for (Product item in friendList.list) {
             _items.add(PreviewTile(product: item));

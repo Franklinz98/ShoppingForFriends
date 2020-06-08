@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/widgets/auth/change_password.dart';
 import 'package:shopping_for_friends/widgets/auth/login.dart';
@@ -60,6 +61,7 @@ class _AuthContainerState extends State<AuthContainer> {
   void initState() {
     super.initState();
     _updateView(0);
+    initializeDateFormatting();
   }
 
   @override
