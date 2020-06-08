@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping_for_friends/backend/chat.dart';
 import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/backend/frutiland_api.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/constants/enums.dart';
 import 'package:shopping_for_friends/constants/provider.dart';
+import 'package:shopping_for_friends/models/message.dart';
 import 'package:shopping_for_friends/models/user_model.dart';
 import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
@@ -53,6 +55,16 @@ class _MainContainerState extends State<MainContainer> {
         ),
       );
     });
+    createChatRoom(widget.user.uid, "user1");
+    getChatRooms(widget.user.uid);
+    sendMessage(
+        "ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1",
+        Message(
+            uid: widget.user.uid,
+            name: widget.user.name,
+            message: "prueba",
+            millis: DateTime.now().millisecondsSinceEpoch));
+    getConversation("ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1");
   }
 
   @override
@@ -220,4 +232,3 @@ class _MainContainerState extends State<MainContainer> {
     });
   }
 }
-

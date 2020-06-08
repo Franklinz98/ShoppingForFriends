@@ -64,7 +64,10 @@ class _CheckoutState extends State<Checkout> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Chat(user: null),
+                  builder: (context) => Chat(
+                    user: null,
+                    chatRoomId: "ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1",
+                  ),
                 ),
               );
             },

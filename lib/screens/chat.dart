@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shopping_for_friends/backend/chat.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/constants/enums.dart';
 import 'package:shopping_for_friends/models/message.dart';
@@ -10,21 +12,21 @@ import 'package:shopping_for_friends/widgets/components/message_item.dart';
 
 class Chat extends StatefulWidget {
   final User user;
+  final String chatRoomId;
 
-  Chat({Key key, @required this.user}) : super(key: key);
+  Chat({Key key, @required this.user, @required this.chatRoomId})
+      : super(key: key);
 
   @override
   _ChatState createState() => _ChatState();
 }
 
 class _ChatState extends State<Chat> {
-  List<Message> messages;
   TextEditingController messageController;
 
   @override
   void initState() {
     super.initState();
-    messages = [];
     messageController = TextEditingController();
   }
 
@@ -63,23 +65,37 @@ class _ChatState extends State<Chat> {
             Expanded(
               child: Container(
                 color: AppColors.tuna,
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  itemBuilder: (BuildContext context, int index) {
-                    Message message = messages[index];
-                    return MessageTile(
-                      type: widget.user.uid == message.uid
-                          ? MessageType.local
-                          : MessageType.remote,
-                      message: message,
-                    );
-                  },
-                  itemCount: messages.length,
-                ),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: getConversation(widget.chatRoomId),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError)
+                        return new Text('Error: ${snapshot.error}');
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return new Text('Loading...');
+                        default:
+                          return ListView(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            children: snapshot.data.documents
+                                .map((DocumentSnapshot messageMap) {
+                              Message message = Message.fromMap(
+                                messageMap.data,
+                              );
+                              return MessageTile(
+                                type: widget.user.uid == message.uid
+                                    ? MessageType.local
+                                    : MessageType.remote,
+                                message: message,
+                              );
+                            }).toList().reversed.toList(),
+                            reverse: true,
+                          );
+                      }
+                    }),
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -87,10 +103,12 @@ class _ChatState extends State<Chat> {
                       validator: null,
                       controller: messageController,
                       hintText: "Escribe un mensaje",
+                      inputType: TextInputType.multiline,
+                      maxLines: null,
                     ),
                   ),
                   SizedBox(
-                    width: 16.0,
+                    width: 8.0,
                   ),
                   FloatingActionButton(
                     child: Icon(
@@ -100,30 +118,7 @@ class _ChatState extends State<Chat> {
                     heroTag: "Send Message",
                     elevation: 0,
                     mini: true,
-                    onPressed: () {
-                      setState(() {
-                        if (Random().nextInt(2) % 2 == 0) {
-                          messages.add(
-                            Message(
-                              uid: widget.user.uid,
-                              name: widget.user.name,
-                              message: messageController.text,
-                              millis: DateTime.now().millisecondsSinceEpoch,
-                            ),
-                          );
-                        } else {
-                          messages.add(
-                            Message(
-                              uid: "other",
-                              name: "Amigo",
-                              message: messageController.text,
-                              millis: DateTime.now().millisecondsSinceEpoch,
-                            ),
-                          );
-                        }
-                        messageController.clear();
-                      });
-                    },
+                    onPressed: () => _sendMessage(),
                   ),
                 ],
               ),
@@ -132,5 +127,16 @@ class _ChatState extends State<Chat> {
         ),
       ),
     );
+  }
+
+  _sendMessage() {
+    Message message = Message(
+      uid: widget.user.uid,
+      name: widget.user.name,
+      message: messageController.text,
+      millis: DateTime.now().millisecondsSinceEpoch,
+    );
+    sendMessage(widget.chatRoomId, message)
+        .then((value) => messageController.clear());
   }
 }
