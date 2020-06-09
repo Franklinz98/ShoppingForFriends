@@ -10,6 +10,7 @@ class Input extends StatefulWidget {
   final bool obscureText;
   final TextEditingController controller;
   final Color backgoundColor;
+  final int maxLines;
 
   const Input(
       {Key key,
@@ -19,7 +20,8 @@ class Input extends StatefulWidget {
       this.hintText,
       this.inputType,
       this.backgoundColor = AppColors.gun_powder,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
@@ -54,6 +56,7 @@ class _InputState extends State<Input> {
         obscureText: widget.obscureText,
         validator: widget.validator,
         controller: widget.controller,
+        maxLines: widget.maxLines,
       ),
     );
   }
