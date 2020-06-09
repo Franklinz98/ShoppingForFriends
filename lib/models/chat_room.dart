@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:shopping_for_friends/models/message.dart';
 
 class ChatRoom {
   final String key;

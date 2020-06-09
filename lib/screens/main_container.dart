@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopping_for_friends/backend/chat.dart';
 import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/backend/frutiland_api.dart';
+import 'package:shopping_for_friends/backend/google_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/constants/enums.dart';
 import 'package:shopping_for_friends/constants/provider.dart';
-import 'package:shopping_for_friends/models/message.dart';
 import 'package:shopping_for_friends/models/user_model.dart';
 import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
@@ -18,12 +17,14 @@ import 'package:shopping_for_friends/widgets/review/checkout.dart';
 class MainContainer extends StatefulWidget {
   final ContentProvider contentProvider;
   final User user;
+  final LoginType loginType;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   MainContainer({
     Key key,
     @required this.contentProvider,
     @required this.user,
+    @required this.loginType,
   }) : super(key: key);
 
   @override
@@ -40,6 +41,7 @@ class _MainContainerState extends State<MainContainer> {
   @override
   void initState() {
     super.initState();
+    widget.contentProvider.updateUser(widget.user);
     _initWidgets();
     _switchContent();
     pingService().then((value) {
@@ -55,16 +57,6 @@ class _MainContainerState extends State<MainContainer> {
         ),
       );
     });
-    createChatRoom(widget.user.uid, "user1");
-    getChatRooms(widget.user.uid);
-    sendMessage(
-        "ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1",
-        Message(
-            uid: widget.user.uid,
-            name: widget.user.name,
-            message: "prueba",
-            millis: DateTime.now().millisecondsSinceEpoch));
-    getConversation("ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1");
   }
 
   @override
@@ -219,16 +211,33 @@ class _MainContainerState extends State<MainContainer> {
   }
 
   _signOut() {
-    signOutFirebase().then((value) {
-      ProviderConstant.newContentProvider();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AuthContainer(
-            contentProvider: ProviderConstant.contentProvider,
-          ),
-        ),
-      );
-    });
+    switch (widget.loginType) {
+      case LoginType.google:
+        signOutGoogle().then((value) {
+          ProviderConstant.newContentProvider();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthContainer(
+                contentProvider: ProviderConstant.contentProvider,
+              ),
+            ),
+          );
+        });
+        break;
+      case LoginType.email:
+        signOutFirebase().then((value) {
+          ProviderConstant.newContentProvider();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthContainer(
+                contentProvider: ProviderConstant.contentProvider,
+              ),
+            ),
+          );
+        });
+        break;
+    }
   }
 }

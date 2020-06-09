@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/backend/frutiland_api.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
@@ -200,19 +199,17 @@ class _SearchScreenState extends State<SearchScreen> {
     } else {
       _categories.remove(category);
     }
-    print(_categories.asMap());
+    _searchQuery();
   }
 
   _searchQuery() {
     String query = _searchController.text;
-    if (query.isNotEmpty) {
-      setState(() {
-        _futureList = fetchProducts(query: query);
-      });
-    } else {
-      setState(() {
-        _futureList = fetchProducts();
-      });
+    String categories = "";
+    if (_categories.isNotEmpty) {
+      categories = _categories.reduce((value, element) => '$value,$element');
     }
+    setState(() {
+      _futureList = fetchProducts(query: query, category: categories);
+    });
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_for_friends/backend/chat.dart';
@@ -78,16 +76,19 @@ class _ChatState extends State<Chat> {
                             padding: EdgeInsets.symmetric(vertical: 8.0),
                             children: snapshot.data.documents
                                 .map((DocumentSnapshot messageMap) {
-                              Message message = Message.fromMap(
-                                messageMap.data,
-                              );
-                              return MessageTile(
-                                type: widget.user.uid == message.uid
-                                    ? MessageType.local
-                                    : MessageType.remote,
-                                message: message,
-                              );
-                            }).toList().reversed.toList(),
+                                  Message message = Message.fromMap(
+                                    messageMap.data,
+                                  );
+                                  return MessageTile(
+                                    type: widget.user.uid == message.uid
+                                        ? MessageType.local
+                                        : MessageType.remote,
+                                    message: message,
+                                  );
+                                })
+                                .toList()
+                                .reversed
+                                .toList(),
                             reverse: true,
                           );
                       }

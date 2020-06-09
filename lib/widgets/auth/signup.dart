@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/constants/enums.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
 import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
@@ -198,6 +199,7 @@ class SignUp extends StatelessWidget {
           builder: (context) => ChangeNotifierProvider<ContentProvider>(
             create: (context) => contentProvider,
             child: MainContainer(
+              loginType: LoginType.email,
               contentProvider: contentProvider,
               user: user,
             ),

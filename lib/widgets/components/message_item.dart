@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/constants/enums.dart';
@@ -9,8 +8,7 @@ import 'package:shopping_for_friends/models/message.dart';
 class MessageTile extends StatelessWidget {
   final Message message;
   final MessageType type;
-  final DateFormat dateFormat =
-      DateFormat('dd MMMM yyyy - hh:mm a', 'es-CO');
+  final DateFormat dateFormat = DateFormat('dd MMMM yyyy - hh:mm a', 'es-CO');
 
   MessageTile({
     Key key,
@@ -55,14 +53,14 @@ class MessageTile extends StatelessWidget {
                                 this.message.millis),
                           ),
                           style: GoogleFonts.roboto(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: AppColors.spun_pearl,
                           ),
                         ),
                         Text(
                           this.message.message,
                           style: GoogleFonts.roboto(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Colors.white,
                           ),
                         )

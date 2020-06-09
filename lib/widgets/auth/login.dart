@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shopping_for_friends/backend/firebase_auth.dart';
 import 'package:shopping_for_friends/backend/google_auth.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
+import 'package:shopping_for_friends/constants/enums.dart';
 import 'package:shopping_for_friends/providers/content_provider.dart';
-import 'package:shopping_for_friends/screens/chat.dart';
 import 'package:shopping_for_friends/screens/main_container.dart';
 import 'package:shopping_for_friends/widgets/components/button.dart';
 import 'package:shopping_for_friends/widgets/components/input.dart';
@@ -34,6 +34,7 @@ class Login extends StatelessWidget {
           builder: (context) => ChangeNotifierProvider<ContentProvider>(
             create: (context) => contentProvider,
             child: MainContainer(
+              loginType: LoginType.google,
               contentProvider: contentProvider,
               user: user,
             ),
@@ -247,19 +248,20 @@ class Login extends StatelessWidget {
 
   _login(BuildContext context, String email, String password) {
     signInWithFirebase(email, password).then((user) {
-      /* Navigator.pushReplacement(
+       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<ContentProvider>(
             create: (context) => contentProvider,
             child: MainContainer(
+              loginType: LoginType.email,
               contentProvider: contentProvider,
               user: user,
             ),
           ),
         ),
-      ); */
-      Navigator.push(
+      );
+      /* Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => Chat(
@@ -267,7 +269,7 @@ class Login extends StatelessWidget {
             chatRoomId: "ZBPcQRY6i7RWnCFBhXvB27vGj0i2_user1",
           ),
         ),
-      );
+      ); */
     }).catchError((error) {});
   }
 }

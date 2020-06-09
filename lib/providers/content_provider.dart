@@ -6,7 +6,7 @@ import 'package:shopping_for_friends/models/product.dart';
 import 'package:shopping_for_friends/models/user_model.dart';
 
 class ContentProvider extends ChangeNotifier {
-  User user = null;
+  User _user;
   List<Product> _myList = [];
   List<FriendList> _friendsLists = [];
   List<String> _selectedFriends = [];
@@ -22,6 +22,7 @@ class ContentProvider extends ChangeNotifier {
   int get selectedFriends => _selectedFriends.length;
   bool get isFinished => _state;
   int get listTotal => _total;
+  User get user => _user;
 
   void finishList() {
     _state = true;
@@ -77,5 +78,9 @@ class ContentProvider extends ChangeNotifier {
   void addFriendLists(List<FriendList> list) {
     _friendsLists.addAll(list);
     notifyListeners();
+  }
+
+  void updateUser(User user) {
+    _user = user;
   }
 }

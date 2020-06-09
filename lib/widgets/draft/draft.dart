@@ -58,12 +58,24 @@ class _DraftListState extends State<DraftList> {
   }
 
   _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
+    Product result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchScreen()),
     );
     if (result != null) {
-      widget.contentNotifier.addProduct(result);
+      bool isAdded = false;
+      int productIndex;
+      widget.contentNotifier.myList.forEach((product) {
+        if (product.name == result.name) {
+          isAdded = true;
+          productIndex = widget.contentNotifier.myList.indexOf(product);
+        }
+      });
+      if (isAdded) {
+        widget.contentNotifier.addUnit(productIndex);
+      } else {
+        widget.contentNotifier.addProduct(result);
+      }
     }
   }
 }

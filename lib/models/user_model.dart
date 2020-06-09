@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class User {
   final String email;
@@ -6,27 +6,22 @@ class User {
   final String uid;
 
   User({
-    this.email,
-    this.name,
-    this.uid,
+    @required this.email,
+    @required this.name,
+    @required this.uid,
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      'email': email,
-      'name': name,
-      'uid':uid
-    };
+    return {'email': email, 'name': name};
   }
 
-
-  User.fromMap(Map<String, dynamic> map)
-      : assert(map['email'] != null),
-        assert(map['name'] != null),
-        assert(map['uid'] != null),
-        email = map['email'],
-        name = map['name'],
-        uid = map['uid'];
-
-  User.fromSnapshot(DocumentSnapshot snapshot) : this.fromMap(snapshot.data);
+  factory User.fromMap(String uid, Map<String, dynamic> map) {
+    assert(uid != null);
+    assert(map != null);
+    return User(
+      email: map['email'],
+      name: map['name'],
+      uid: uid,
+    );
+  }
 }

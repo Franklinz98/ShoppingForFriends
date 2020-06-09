@@ -5,7 +5,7 @@ import 'package:shopping_for_friends/models/user_model.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final db = Firestore.instance;
-User currentSignedInUser = User();
+User currentSignedInUser;
 
 Future<User> signInWithFirebase(email, password) async {
   var fbuser;
@@ -19,8 +19,8 @@ Future<User> signInWithFirebase(email, password) async {
     return null;
   }
   final DocumentSnapshot userSnapshot =
-      await db.collection('users').document(fbuser.email).get();
-  updateCurrentSignedInUser(userSnapshot);
+      await db.collection('users').document(fbuser.uid).get();
+  updateCurrentSignedInUser(fbuser, userSnapshot);
   return currentSignedInUser;
 }
 
@@ -48,15 +48,11 @@ Future<User> signUpWithFirebase(email, password, name) async {
     throw Exception('ERROR_SET_NAME');
   }
 
-  currentSignedInUser = User(
-    email: email,
-    name: name,
-    uid:fbUser.uid
-  );
+  currentSignedInUser = User(email: email, name: name, uid: fbUser.uid);
   print('currentSignedInUser' + currentSignedInUser.toString());
   await db
       .collection('users')
-      .document(email)
+      .document(fbUser.uid)
       .setData(currentSignedInUser.toMap());
   return currentSignedInUser;
 }
@@ -70,12 +66,14 @@ Future<String> recoverWithFirebase(email) async {
   return 'OK';
 }
 
-void updateCurrentSignedInUser(DocumentSnapshot userSnapshot) {
-  currentSignedInUser = User.fromSnapshot(userSnapshot);
+void updateCurrentSignedInUser(
+    FirebaseUser user, DocumentSnapshot userSnapshot) {
+  print("updating email");
+  currentSignedInUser = User.fromMap(user.uid, userSnapshot.data);
 }
 
 Future<bool> signOutFirebase() async {
-  currentSignedInUser = User();
+  currentSignedInUser = null;
   await _auth.signOut();
   return true;
 }
