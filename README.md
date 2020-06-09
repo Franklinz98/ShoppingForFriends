@@ -21,3 +21,7 @@ Application for joint purchases, developed in Flutter:
 • Wilson Tovar: [krthr](https://github.com/krthr)
 
 • Franklin Zabaleta: [Franklinz98](https://github.com/Franklinz98)
+
+ 
+
+Final Project, Mobile Programming, Universidad del Norte 2020-10
