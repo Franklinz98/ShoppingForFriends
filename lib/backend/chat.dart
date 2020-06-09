@@ -31,6 +31,5 @@ class chatRoom{
 
   getChatRooms(String userId) async{
     return await Firestore.instance.collection("chatRoom").where("users", arrayContains: userId).snapshots();
-
   }
 }
