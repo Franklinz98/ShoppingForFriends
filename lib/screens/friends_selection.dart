@@ -90,11 +90,20 @@ class _FriendSelectionState extends State<FriendSelection> {
                             onTap: () {
                               if (friendList.uid !=
                                   widget.contentNotifier.user.uid) {
-                                widget.contentNotifier
-                                    .switchFriendListState(friendList);
+                                if (!widget.contentNotifier.isFinished) {
+                                  widget.contentNotifier
+                                      .switchFriendListState(friendList);
+                                } else {
+                                  widget._scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "No puedes hacer esto, finalizaste la lista...")));
+                                }
                               } else {
-                                widget._scaffoldKey.currentState
-                                    .showSnackBar(SnackBar(content: Text("No puedes seleccionar tu lista")));
+                                widget._scaffoldKey.currentState.showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "No puedes seleccionar tu lista")));
                               }
                             },
                           );
