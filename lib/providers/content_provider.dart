@@ -9,23 +9,27 @@ class ContentProvider extends ChangeNotifier {
   User _user;
   List<Product> _myList = [];
   List<FriendList> _friendsLists = [];
-  List<String> _selectedFriends = [];
+  List<String> _selectedFriendsUid = [];
   bool _state = false;
   int _total = 0;
+  int _selectedFriends = 0;
 
   UnmodifiableListView<Product> get myList => UnmodifiableListView(_myList);
   UnmodifiableListView<FriendList> get friendsLists =>
       UnmodifiableListView(_friendsLists);
+  UnmodifiableListView<String> get selectedFriendsUid =>
+      UnmodifiableListView(_selectedFriendsUid);
 
   int get length => _myList.length;
   int get friendsLength => _friendsLists.length;
-  int get selectedFriends => _selectedFriends.length;
+  int get selectedFriends => _selectedFriends;
   bool get isFinished => _state;
   int get listTotal => _total;
   User get user => _user;
 
   void finishList() {
     _state = true;
+    notifyListeners();
   }
 
   void addProduct(Product product) {
@@ -57,15 +61,28 @@ class ContentProvider extends ChangeNotifier {
   }
 
   bool isSelected(String uid) {
-    return _selectedFriends.contains(uid);
+    return _selectedFriendsUid.contains(uid);
   }
 
-  void switchFriendListState(FriendList friendList) {
+  /* void switchFriendListState(FriendList friendList) {
     if (_selectedFriends.contains(friendList.uid)) {
       _selectedFriends.remove(friendList.uid);
       friendList.checked = false;
     } else {
       _selectedFriends.add(friendList.uid);
+      friendList.checked = true;
+    }
+    notifyListeners();
+  } */
+
+  void switchFriendListState(FriendList friendList) {
+    if (friendList.checked) {
+      _selectedFriends = _selectedFriends - 1;
+      _selectedFriendsUid.remove(friendList.uid);
+      friendList.checked = false;
+    } else {
+      _selectedFriends = _selectedFriends + 1;
+      _selectedFriendsUid.add(friendList.uid);
       friendList.checked = true;
     }
     notifyListeners();
@@ -75,12 +92,55 @@ class ContentProvider extends ChangeNotifier {
     _friendsLists.clear();
   }
 
-  void addFriendLists(List<FriendList> list) {
-    _friendsLists.addAll(list);
-    notifyListeners();
+  void addFriendList(FriendList list) {
+    _friendsLists.add(list);
   }
 
   void updateUser(User user) {
     _user = user;
+  }
+
+  void purchaseProduct(Product product) {
+    if (!product.purchased) {
+      product.purchased = true;
+      notifyListeners();
+    }
+  }
+
+  bool testCheckout() {
+    bool purchaseDone = true;
+    _myList.forEach((product) {
+      purchaseDone = purchaseDone & product.purchased;
+    });
+    _friendsLists.forEach((friendList) {
+      if (friendList.checked) {
+        friendList.list.forEach((product) {
+          purchaseDone = purchaseDone & product.purchased;
+        });
+      }
+    });
+    return purchaseDone;
+  }
+
+  void clearMyList() {
+    _myList.clear();
+    _state = false;
+    _selectedFriendsUid.clear();
+    _selectedFriends = 0;
+    notifyListeners();
+  }
+
+  Map<String, dynamic> myListToMap() {
+    List<Map<String, dynamic>> _list = [];
+    _myList.forEach((element) {
+      _list.add(element.toMap());
+    });
+    return {
+      'name': _user.name,
+      'uid': _user.uid,
+      'total': _total,
+      'list': _list,
+      'isPublic': _state
+    };
   }
 }

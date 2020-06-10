@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopping_for_friends/constants/colors.dart';
 import 'package:shopping_for_friends/constants/formatter.dart';
+import 'package:shopping_for_friends/other/s_f_f_line_awesome_icons.dart';
 
 class PreviewHeader extends StatelessWidget {
   final bool finishedList;
@@ -43,15 +44,19 @@ class PreviewHeader extends StatelessWidget {
               SizedBox(
                 width: 8.0,
               ),
-              Text(
-                Formatter.currency.format(this.total),
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  fontFamily: "Roboto",
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              )
+              this.onChatTap != null
+                  ? FloatingActionButton(
+                      child: Icon(
+                        SFFLineAwesome.comments,
+                        color: Colors.white,
+                      ),
+                      elevation: 0,
+                      mini: true,
+                      heroTag: "chat $text",
+                      onPressed: onChatTap)
+                  : SizedBox(
+                      width: 0,
+                    ),
             ],
           )
         : Row(

@@ -101,14 +101,14 @@ class MessageTile extends StatelessWidget {
                           ),
                           textAlign: TextAlign.right,
                           style: GoogleFonts.roboto(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: AppColors.spun_pearl,
                           ),
                         ),
                         Text(
                           this.message.message,
                           style: GoogleFonts.roboto(
-                            fontSize: 12,
+                            fontSize: 14,
                             color: Colors.white,
                           ),
                         )

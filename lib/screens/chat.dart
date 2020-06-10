@@ -10,9 +10,14 @@ import 'package:shopping_for_friends/widgets/components/message_item.dart';
 
 class Chat extends StatefulWidget {
   final User user;
+  final String friendName;
   final String chatRoomId;
 
-  Chat({Key key, @required this.user, @required this.chatRoomId})
+  Chat(
+      {Key key,
+      @required this.user,
+      @required this.friendName,
+      @required this.chatRoomId})
       : super(key: key);
 
   @override
@@ -49,7 +54,7 @@ class _ChatState extends State<Chat> {
                       }),
                   Expanded(
                     child: Text(
-                      "Amigo 1",
+                      widget.friendName,
                       style: TextStyle(
                         fontFamily: "Roboto",
                         fontSize: 20,
@@ -64,35 +69,36 @@ class _ChatState extends State<Chat> {
               child: Container(
                 color: AppColors.tuna,
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: getConversation(widget.chatRoomId),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError)
-                        return new Text('Error: ${snapshot.error}');
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.waiting:
-                          return new Text('Loading...');
-                        default:
-                          return ListView(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            children: snapshot.data.documents
-                                .map((DocumentSnapshot messageMap) {
-                                  Message message = Message.fromMap(
-                                    messageMap.data,
-                                  );
-                                  return MessageTile(
-                                    type: widget.user.uid == message.uid
-                                        ? MessageType.local
-                                        : MessageType.remote,
-                                    message: message,
-                                  );
-                                })
-                                .toList()
-                                .reversed
-                                .toList(),
-                            reverse: true,
-                          );
-                      }
-                    }),
+                  stream: getConversation(widget.chatRoomId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError)
+                      return new Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return new Text('Loading...');
+                      default:
+                        return ListView(
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          children: snapshot.data.documents
+                              .map((DocumentSnapshot messageMap) {
+                                Message message = Message.fromMap(
+                                  messageMap.data,
+                                );
+                                return MessageTile(
+                                  type: widget.user.uid == message.uid
+                                      ? MessageType.local
+                                      : MessageType.remote,
+                                  message: message,
+                                );
+                              })
+                              .toList()
+                              .reversed
+                              .toList(),
+                          reverse: true,
+                        );
+                    }
+                  },
+                ),
               ),
             ),
             Padding(

@@ -10,9 +10,7 @@ class ShoppingForFriendsApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    print(ProviderConstant.contentProvider);
     ProviderConstant.newContentProvider();
-    print("app: ${ProviderConstant.contentProvider.hashCode}");
     return MaterialApp(
       title: 'Shopping For Friends',
       theme: ThemeData(

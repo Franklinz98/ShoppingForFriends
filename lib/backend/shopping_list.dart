@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<bool> createShoppingList(String userId, shoppingListMap) async {
+Future<bool> createShoppingList(
+    String userId, Map<String, dynamic> shoppingListMap) async {
   await Firestore.instance
       .collection('ShoppingList')
       .document(userId)
@@ -11,7 +12,8 @@ Future<bool> createShoppingList(String userId, shoppingListMap) async {
   return true;
 }
 
-Future<bool> updateList(String userId, shoppingListMap) async {
+Future<bool> updateList(
+    String userId, Map<String, dynamic> shoppingListMap) async {
   await Firestore.instance
       .collection('ShoppingList')
       .document(userId)
@@ -41,9 +43,20 @@ Future<bool> setShoppingListPublic(String userId) async {
   return true;
 }
 
-getPublicShoppingLists() async {
-  return Firestore.instance
+Future<bool> userHasList(String uid) async {
+  final snapshot =
+      await Firestore.instance.collection("ShoppingList").document(uid).get();
+  if (snapshot == null || !snapshot.exists) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+getPublicShoppingLists() {
+  var snapshot = Firestore.instance
       .collection("ShoppingList")
       .where('isPublic', isEqualTo: true)
       .snapshots();
+  return snapshot;
 }
