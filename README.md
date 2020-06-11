@@ -14,7 +14,7 @@ Application for joint purchases, developed in Flutter:
 
 ## Collaborators:
 
-• David Accounts: [DavidCuentasMar](https://github.com/DavidCuentasMar)
+• David Cuentas: [DavidCuentasMar](https://github.com/DavidCuentasMar)
 
 • Willian García: [wgarcia1309](https://github.com/wgarcia1309)
 
